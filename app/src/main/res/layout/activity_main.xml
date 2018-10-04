@@ -19,7 +19,8 @@
                 android:id="@+id/mainMemberTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Member"
+                tools:text="Menber" />
 
             <ListView
                 android:id="@+id/mainMemberList"
@@ -32,7 +33,7 @@
                 android:id="@+id/mainToDoTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="ToDo"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="157dp" />
 
