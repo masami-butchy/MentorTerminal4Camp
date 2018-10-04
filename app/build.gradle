@@ -17,6 +17,7 @@ android {
         }
     }
 }
+apply plugin: 'realm-android' // 追加
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
