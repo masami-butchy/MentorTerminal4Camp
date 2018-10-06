@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:onClick="intentMember"
             android:text="MEMBER"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:onClick="intentMenter"
             android:text="MENTER"
             android:textColor="@android:color/white"
             android:textSize="18sp" />

@@ -51,6 +51,9 @@ public class MyToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
 
         if (item != null){
             viewHolder.titleTextView.setText(item.title);
+            viewHolder.categoryTextView.setText(item.category);
+            viewHolder.priorityTextView.setText(item.priority);
+            viewHolder.contentTextViewx.setText(item.content);
             viewHolder.checkBox.setChecked(item.checkBoxisChecked);
             viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -164,6 +164,10 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(v.getContext(), MemberActivity.class);
         v.getContext().startActivity(intent);
     }
+    public void intentHome(View v){
+        Intent intent = new Intent(v.getContext(), MainActivity.class);
+        v.getContext().startActivity(intent);
+    }
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are
