@@ -833,7 +833,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dp"
-                    android:text="Day1"
+                    android:text="Day5"
                     android:textSize="18sp" />
 
                 <LinearLayout

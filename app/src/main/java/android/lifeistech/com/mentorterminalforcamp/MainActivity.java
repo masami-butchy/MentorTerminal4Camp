@@ -31,6 +31,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -51,12 +53,14 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
-    private TextView mOutputText;
+    //private TextView mOutputText;
     private Button mCallApiButton;
-    ProgressDialog mProgress;
+    ProgressDialog mProgress,mOutputText;
     public Realm realm;
     MainToDoListAdapter myToDoListAdapter;
+    MemberListAdapter memberListAdapter;
     ListView myToDoListView, memberList;
+    TextView mainMemberText;
 
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -80,16 +84,42 @@ public class MainActivity extends AppCompatActivity
 
         myToDoListView = (ListView) findViewById(R.id.mainToDoList);
         memberList = (ListView)findViewById(R.id.mainMemberList);
+        mainMemberText = (TextView)findViewById(R.id.mainMemberTitleTextView);
 
         //createDefaultLayout();
         //getResultsFromApi();
 
         setListComponent();
 
+        mProgress = new ProgressDialog(this);
+        mOutputText = new ProgressDialog(this);
+        mProgress.setMessage("Calling Google Sheets API ...");
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+        getResultsFromApi();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {//これはonOptionsItemSelected(MenuItem item){}のあとじゃないとonOptionsItemSelectedが機能しない。ここでonOptionsItemSelectedを含めた設定が適用されると思われる。
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {//これは onCreateOptionsMenu(Menu menu){}の前じゃないとここは機能しない。onCreateOptionsMenu でonOptionsItemSelectedを含めた設定が適用されると思われる。
+
+        switch(item.getItemId()) {
+            case R.id.menuALL:
+                Intent intent = new Intent(this, ConfigActivity.class);
+                startActivity(intent);
+
+            case R.id.menuSync:
+                getResultsFromApi();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -98,7 +128,7 @@ public class MainActivity extends AppCompatActivity
         setListComponent();
     }
 
-    private void createDefaultLayout(){
+    /*private void createDefaultLayout(){
         LinearLayout activityLayout = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -137,7 +167,7 @@ public class MainActivity extends AppCompatActivity
         mProgress.setMessage("Calling Google Sheets API ...");
 
         setContentView(activityLayout);
-    }
+    }*/
 
     public void setListComponent(){
 
@@ -153,6 +183,12 @@ public class MainActivity extends AppCompatActivity
         List<RealmToDoObject> item = realm.copyFromRealm(results);
         myToDoListAdapter = new MainToDoListAdapter(this, R.layout.activity_maintodolist_component, item, realm);
         myToDoListView.setAdapter(myToDoListAdapter);
+
+        RealmResults<RealmMemberObject> resultsb = null;
+        resultsb = realm.where(RealmMemberObject.class).findAll();
+        List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
+        memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
+        memberList.setAdapter(memberListAdapter);
 
     }
 
@@ -180,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (! isDeviceOnline()) {
-            mOutputText.setText("No network connection available.");
+            mOutputText.setMessage("No network connection available.");
         } else {
             new MakeRequestTask(mCredential).execute();
         }
@@ -238,7 +274,7 @@ public class MainActivity extends AppCompatActivity
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    mOutputText.setText(
+                    mOutputText.setMessage(
                             "This app requires Google Play Services. Please install " +
                                     "Google Play Services on your device and relaunch this app.");
                 } else {
@@ -404,17 +440,22 @@ public class MainActivity extends AppCompatActivity
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
-            String range = "Class Data!A2:E";
+            String spreadsheetId = "1QmTMcVTLQEoYBICUltn_s0YDYmeDlMmitta6U_raEt0";
+            String range = "5Daysメンターto do!A4:B";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
                     .execute();
             List<List<Object>> values = response.getValues();
             if (values != null) {
-                results.add("Name, Major");
+                SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
                 for (List row : values) {
-                    results.add(row.get(0) + ", " + row.get(4));
+                    if(row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1){
+                        SharedPreferences.Editor editor = data.edit();
+                        editor.putString("TeamAlphabet", row.get(0)+"");
+                        editor.apply();
+                        results.add(data.getString("TeamAlphabet",""));
+                    }
                 }
             }
             return results;
@@ -424,7 +465,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setText("");
+            mOutputText.setMessage("");
             mProgress.show();
         }
 
@@ -432,10 +473,10 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
             if (output == null || output.size() == 0) {
-                mOutputText.setText("No results returned.");
+                mOutputText.setMessage("No results returned.");
             } else {
-                output.add(0, "Data retrieved using the Google Sheets API:");
-                mOutputText.setText(TextUtils.join("\n", output));
+                //output.add(0, "Data retrieved using the Google Sheets API:");
+                mainMemberText.setText(TextUtils.join("\n", output));
             }
         }
 
@@ -452,11 +493,11 @@ public class MainActivity extends AppCompatActivity
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             MainActivity.REQUEST_AUTHORIZATION);
                 } else {
-                    mOutputText.setText("The following error occurred:\n"
+                    mOutputText.setMessage("The following error occurred:\n"
                             + mLastError.getMessage());
                 }
             } else {
-                mOutputText.setText("Request cancelled.");
+                mOutputText.setMessage("Request cancelled.");
             }
         }
     }

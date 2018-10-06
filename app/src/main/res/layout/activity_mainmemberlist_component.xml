@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainMemberList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -12,14 +12,14 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/comentTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/commentTextView"
         app:layout_constraintEnd_toEndOf="@+id/nameTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView"
         tools:text="マインクラフトコース" />
 
     <TextView
-        android:id="@+id/comentTextView"
+        android:id="@+id/commentTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -42,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/comentTextView"
+        app:layout_constraintBottom_toTopOf="@+id/commentTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nameTextView"
         app:layout_constraintTop_toTopOf="parent">
@@ -67,6 +67,7 @@
                 android:background="@drawable/frame_clear"
                 android:gravity="center"
                 android:text="1"
+                android:textColor="#89000000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -176,7 +177,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/comentTextView"
+            app:layout_constraintBottom_toTopOf="@+id/commentTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/courseTextView"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">

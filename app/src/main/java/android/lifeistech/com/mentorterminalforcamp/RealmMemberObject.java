@@ -3,35 +3,35 @@ package android.lifeistech.com.mentorterminalforcamp;
 
 import io.realm.RealmObject;
 
-public class RealmMemberObject //extends RealmObject
+public class RealmMemberObject extends RealmObject
  {
      //MemberList
-     public String Name;
+     public String name;
 
-     public String Course;
+     public String course;
 
      public String coment;
-
-     public short TextOne;
-     public short TextTwo;
-     public short TextThree;
-     public short TextFour;
-     public short TextFive;
-     public short Textsix;
-     public short TextSeven;
-     public short TextEight;
-     public short TextNine;
-     public short TextTen;
-     public short TextEleven;
-     public short TextTwelve;
-     public short TextThirteen;
-     public short TextFourteen;
-     public short TextFifteen;
-     public short TextSixteen;
-     public short TextSeventeen;
-     public short TextEightteen;
-     public short TextNineteen;
-     public short TextTwenty;
+//non 0x,progress 1x,comp2x,non x0,original x1,mokuhyou x2
+     public short textOne;
+     public short textTwo;
+     public short textThree;
+     public short textFour;
+     public short textFive;
+     public short textsix;
+     public short textSeven;
+     public short textEight;
+     public short textNine;
+     public short textTen;
+     public short textEleven;
+     public short textTwelve;
+     public short textThirteen;
+     public short textFourteen;
+     public short textFifteen;
+     public short textSixteen;
+     public short textSeventeen;
+     public short textEightteen;
+     public short textNineteen;
+     public short textTwenty;
 
      public String menberMemo;
 
