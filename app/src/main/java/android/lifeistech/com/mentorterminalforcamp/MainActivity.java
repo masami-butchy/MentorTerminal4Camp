@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     private Button mCallApiButton;
     ProgressDialog mProgress;
     public Realm realm;
-    MyToDoListAdapter myToDoListAdapter;
+    MainToDoListAdapter myToDoListAdapter;
     ListView myToDoListView, memberList;
 
 
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         }*/
         results = realm.where(RealmToDoObject.class).findAll();
         List<RealmToDoObject> item = realm.copyFromRealm(results);
-        myToDoListAdapter = new MyToDoListAdapter(this, R.layout.activity_mytodo_component, item, realm);
+        myToDoListAdapter = new MainToDoListAdapter(this, R.layout.activity_maintodolist_component, item, realm);
         myToDoListView.setAdapter(myToDoListAdapter);
 
     }
@@ -165,8 +165,6 @@ public class MainActivity extends AppCompatActivity
         v.getContext().startActivity(intent);
     }
     public void intentHome(View v){
-        Intent intent = new Intent(v.getContext(), MainActivity.class);
-        v.getContext().startActivity(intent);
     }
 
     /**
