@@ -5,6 +5,7 @@ import io.realm.RealmObject;
 
 public class RealmToDoObject extends RealmObject {
 
+        //ToDoList
         public String title;
 
         public String content;
@@ -14,4 +15,6 @@ public class RealmToDoObject extends RealmObject {
         public String priority;
 
         public Boolean checkBoxisChecked;
+
+
 }
