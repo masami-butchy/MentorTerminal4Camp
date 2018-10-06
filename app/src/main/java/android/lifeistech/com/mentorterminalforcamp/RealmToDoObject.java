@@ -15,6 +15,4 @@ public class RealmToDoObject extends RealmObject {
         public String priority;
 
         public Boolean checkBoxisChecked;
-
-
 }
