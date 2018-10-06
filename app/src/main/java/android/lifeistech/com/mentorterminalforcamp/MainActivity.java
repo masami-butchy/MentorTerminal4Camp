@@ -28,12 +28,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -42,16 +44,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
     ProgressDialog mProgress;
     public Realm realm;
+    MyToDoListAdapter myToDoListAdapter;
+    ListView myToDoListView, memberList;
 
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -70,7 +75,30 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
+
+        myToDoListView = (ListView) findViewById(R.id.mainToDoList);
+        memberList = (ListView)findViewById(R.id.mainMemberList);
+
+        //createDefaultLayout();
+        //getResultsFromApi();
+
+        setListComponent();
+
+        // Initialize credentials and service object.
+        mCredential = GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff());
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setListComponent();
+    }
+
+    private void createDefaultLayout(){
         LinearLayout activityLayout = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -109,14 +137,33 @@ public class MainActivity extends Activity
         mProgress.setMessage("Calling Google Sheets API ...");
 
         setContentView(activityLayout);
-
-        // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
     }
 
+    public void setListComponent(){
 
+        RealmResults<RealmToDoObject> results = null;
+        /*if (filterSignal ==1) {
+            results = realm.where(RealmToDoObject.class).equalTo("checkBoxisChecked", true).findAll();
+        } else if (filterSignal == 2) {
+            results = realm.where(RealmToDoObject.class).equalTo("checkBoxisChecked", false).findAll();
+        } else {
+            results = realm.where(RealmToDoObject.class).findAll();
+        }*/
+        results = realm.where(RealmToDoObject.class).findAll();
+        List<RealmToDoObject> item = realm.copyFromRealm(results);
+        myToDoListAdapter = new MyToDoListAdapter(this, R.layout.activity_mytodo_component, item, realm);
+        myToDoListView.setAdapter(myToDoListAdapter);
+
+    }
+
+    public void intentMenter(View v){
+        Intent intent = new Intent(v.getContext(), ToDoActivity.class);
+        v.getContext().startActivity(intent);
+    }
+    public void intentMember(View v){
+        Intent intent = new Intent(v.getContext(), MemberActivity.class);
+        v.getContext().startActivity(intent);
+    }
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are

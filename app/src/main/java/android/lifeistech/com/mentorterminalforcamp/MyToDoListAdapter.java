@@ -11,15 +11,17 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import io.realm.Realm;
 
-public class ToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
+public class MyToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
 
     List<RealmToDoObject> mListComponent;
     Realm realm;
-    public ToDoListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
+    public MyToDoListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
         super(context, layoutResourceId, objects);
 
         mListComponent = objects;
@@ -37,7 +39,7 @@ public class ToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
         final ViewHolder viewHolder;
 
         if(convertView ==null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_list_component, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_maintodolist_component, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
@@ -69,7 +71,7 @@ public class ToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
                 }
             });
 
-            viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            /*viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
                     Intent intent = new Intent(v.getContext(), DetailActivity.class);
@@ -78,7 +80,7 @@ public class ToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
                     //intent.putExtra("content", item.content);
                     v.getContext().startActivity(intent);
                 }
-            });
+            });*/
         }
 
         return convertView;
@@ -86,14 +88,17 @@ public class ToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
 
     public static  class ViewHolder{
 
-        TextView titleTextView;
+        TextView titleTextView, categoryTextView, priorityTextView, contentTextViewx;
         CheckBox checkBox;
         LinearLayout linearLayout;
 
         public ViewHolder(View view){
-            titleTextView = (TextView)view.findViewById(R.id.titleTextView);
-            checkBox = (CheckBox)view.findViewById(R.id.checkBox);
-            linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+            titleTextView = (TextView)view.findViewById(R.id.myToDoComponentTitleTextView);
+            categoryTextView = (TextView)view.findViewById(R.id.myToDoComponentCategoryTextView);
+            priorityTextView = (TextView)view.findViewById(R.id.myToDoComponentPriorityTextView);
+            contentTextViewx = (TextView)view.findViewById(R.id.myToDoComponentContentTextView);
+            checkBox = (CheckBox)view.findViewById(R.id.myToDoComponentCheckBox);
+            linearLayout = (LinearLayout) view.findViewById(R.id.myToDoComponentParentLinearLayout);
         }
     }
 
