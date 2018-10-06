@@ -1,7 +1,6 @@
 package android.lifeistech.com.mentorterminalforcamp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,15 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import io.realm.Realm;
 
-public class MyToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
+public class MemberListAdapter extends ArrayAdapter<RealmToDoObject>{
 
     List<RealmToDoObject> mListComponent;
     Realm realm;
-    public MyToDoListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
+    public MemberListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
         super(context, layoutResourceId, objects);
 
         mListComponent = objects;
@@ -39,7 +36,7 @@ public class MyToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
         final ViewHolder viewHolder;
 
         if(convertView ==null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_mytodo_component, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_member, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }

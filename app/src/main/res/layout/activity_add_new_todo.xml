@@ -68,7 +68,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="top"
-            android:inputType="textPersonName" />
+            android:inputType="textMultiLine"
+            android:singleLine="false" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -83,5 +84,6 @@
         android:onClick="create"
         app:backgroundTint="@android:color/holo_red_light"
         app:srcCompat="?android:attr/textCheckMark" />
+
 
 </RelativeLayout>
