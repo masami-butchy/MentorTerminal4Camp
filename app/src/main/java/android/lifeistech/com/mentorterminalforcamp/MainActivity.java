@@ -31,6 +31,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,16 +53,19 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
-    GoogleAccountCredential mCredential;
-    //private TextView mOutputText;
-    private Button mCallApiButton;
-    ProgressDialog mProgress,mOutputText;
+
     public Realm realm;
+    SharedPreferences data;
+
     MainToDoListAdapter myToDoListAdapter;
     MemberListAdapter memberListAdapter;
     ListView myToDoListView, memberList;
     TextView mainMemberText;
 
+    //private TextView mOutputText;
+    //private Button mCallApiButton;
+    ProgressDialog mProgress,mOutputText;
+    public static GoogleAccountCredential mCredential;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
+        data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
 
         myToDoListView = (ListView) findViewById(R.id.mainToDoList);
         memberList = (ListView)findViewById(R.id.mainMemberList);
@@ -128,46 +133,47 @@ public class MainActivity extends AppCompatActivity
         setListComponent();
     }
 
-    /*private void createDefaultLayout(){
-        LinearLayout activityLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
+//    private void createDefaultLayout(){
+//        LinearLayout activityLayout = new LinearLayout(this);
+//       LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//               LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.MATCH_PARENT);
+//        activityLayout.setLayoutParams(lp);
+//        activityLayout.setOrientation(LinearLayout.VERTICAL);
+//        activityLayout.setPadding(16, 16, 16, 16);
+//
+//        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//
+//        mCallApiButton = new Button(this);
+//        mCallApiButton.setText(BUTTON_TEXT);
+//        mCallApiButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mCallApiButton.setEnabled(false);
+//                mOutputText.setText("");
+//                getResultsFromApi();
+//                mCallApiButton.setEnabled(true);
+//            }
+//        });
+//        activityLayout.addView(mCallApiButton);
+//
+//        mOutputText = new TextView(this);
+//        mOutputText.setLayoutParams(tlp);
+//        mOutputText.setPadding(16, 16, 16, 16);
+//        mOutputText.setVerticalScrollBarEnabled(true);
+//        mOutputText.setMovementMethod(new ScrollingMovementMethod());
+//        mOutputText.setText(
+//                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
+//        activityLayout.addView(mOutputText);
+//
+//        mProgress = new ProgressDialog(this);
+//        mProgress.setMessage("Calling Google Sheets API ...");
+//
+//        setContentView(activityLayout);
+//    }
 
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        mCallApiButton = new Button(this);
-        mCallApiButton.setText(BUTTON_TEXT);
-        mCallApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallApiButton.setEnabled(false);
-                mOutputText.setText("");
-                getResultsFromApi();
-                mCallApiButton.setEnabled(true);
-            }
-        });
-        activityLayout.addView(mCallApiButton);
-
-        mOutputText = new TextView(this);
-        mOutputText.setLayoutParams(tlp);
-        mOutputText.setPadding(16, 16, 16, 16);
-        mOutputText.setVerticalScrollBarEnabled(true);
-        mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        mOutputText.setText(
-                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
-        activityLayout.addView(mOutputText);
-
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Sheets API ...");
-
-        setContentView(activityLayout);
-    }*/
 
     public void setListComponent(){
 
@@ -210,7 +216,7 @@ public class MainActivity extends AppCompatActivity
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
      */
-    private void getResultsFromApi() {
+    public void getResultsFromApi() {
         if (! isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
         } else if (mCredential.getSelectedAccountName() == null) {
@@ -233,7 +239,7 @@ public class MainActivity extends AppCompatActivity
      * is granted.
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
-    private void chooseAccount() {
+    public void chooseAccount() {
         if (EasyPermissions.hasPermissions(
                 this, Manifest.permission.GET_ACCOUNTS)) {
             String accountName = getPreferences(Context.MODE_PRIVATE)
@@ -441,21 +447,48 @@ public class MainActivity extends AppCompatActivity
          */
         private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1QmTMcVTLQEoYBICUltn_s0YDYmeDlMmitta6U_raEt0";
-            String range = "5Daysメンターto do!A4:B";
+            String range = "5Daysメンターto do!A1:AG";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
                     .execute();
             List<List<Object>> values = response.getValues();
             if (values != null) {
-                SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
                 for (List row : values) {
                     if(row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1){
-                        SharedPreferences.Editor editor = data.edit();
-                        editor.putString("TeamAlphabet", row.get(0)+"");
-                        editor.apply();
+                        for (int i = 2; i < 33; i++){
+                            SharedPreferences.Editor editor = data.edit();
+                            editor.putString("element" + i, row.get(i) + "");
+                            editor.apply();
+                            results.add(row.get(i)+"");
+                        }
+
+
                         results.add(data.getString("TeamAlphabet",""));
                     }
+                }
+            }
+            range = "メンバーひとことメモ!A1:N";
+            response = this.mService.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            values = response.getValues();
+            if (values != null) {
+                data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+                int aa = 0;
+                for (List row : values) {
+                    if (row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1) {
+                        SharedPreferences.Editor editor = data.edit();
+                        editor.putString("element" + aa + 2, row.get(2) + "");
+                        editor.apply();
+                        editor.putString("element" + aa + 8, row.get(8) + "");
+                        editor.apply();
+
+
+                        results.add(row.get(2) + "");
+                        results.add(row.get(8) + "");
+                    }
+                    aa++;
                 }
             }
             return results;
@@ -477,6 +510,8 @@ public class MainActivity extends AppCompatActivity
             } else {
                 //output.add(0, "Data retrieved using the Google Sheets API:");
                 mainMemberText.setText(TextUtils.join("\n", output));
+                Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
+
             }
         }
 
