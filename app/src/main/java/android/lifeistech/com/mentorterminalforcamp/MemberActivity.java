@@ -440,6 +440,26 @@ public class MemberActivity extends AppCompatActivity
                     aa++;
                 }
             }
+            range = "5Daysメンターto do!C3:AQ3";
+            response = this.mService.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            values = response.getValues();
+            if (values != null) {
+                int aa = 0;
+                int aapre = 0;
+                int bb = 0;
+                int cc = 0;
+                for (List row : values) {
+                    for(int i = 1; i <= 33;i++){
+                        SharedPreferences.Editor editor = data.edit();
+                        editor.putString("elementName" + i, row.get(i) + "");
+                        editor.apply();
+                        results.add(row.get(i) + "");
+                    }
+                    aa++;
+                }
+            }
 
 
             return results;
