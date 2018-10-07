@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     MainToDoListAdapter myToDoListAdapter;
     MemberListAdapter memberListAdapter;
-    ListView myToDoListView, memberList;
+    ListView myToDoListView, mainMemberList;
     TextView mainMemberText;
 
     //private TextView mOutputText;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
 
         myToDoListView = (ListView) findViewById(R.id.mainToDoList);
-        memberList = (ListView)findViewById(R.id.mainMemberList);
+        mainMemberList = (ListView)findViewById(R.id.mainMemberList);
         mainMemberText = (TextView)findViewById(R.id.mainMemberTitleTextView);
 
         //createDefaultLayout();
@@ -105,7 +105,10 @@ public class MainActivity extends AppCompatActivity
                 .setBackOff(new ExponentialBackOff());
         getResultsFromApi();
 
+
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//これはonOptionsItemSelected(MenuItem item){}のあとじゃないとonOptionsItemSelectedが機能しない。ここでonOptionsItemSelectedを含めた設定が適用されると思われる。
@@ -194,7 +197,10 @@ public class MainActivity extends AppCompatActivity
         resultsb = realm.where(RealmMemberObject.class).findAll();
         List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
         memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
-        memberList.setAdapter(memberListAdapter);
+        mainMemberList.setAdapter(memberListAdapter);
+        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
+            changeMemberObject(cc);
+        }
 
     }
 
@@ -476,23 +482,42 @@ public class MainActivity extends AppCompatActivity
             if (values != null) {
                 data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
                 int aa = 0;
+                int aapre = 0;
+                int bb = 0;
+                int cc = 0;
                 for (List row : values) {
                     if (row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1) {
+                        aapre = aa;
+                        bb = aa + Integer.parseInt(data.getString("NumberOfMember", "0"));
+                    }
+                    if(aa < bb){
+                        cc++;
                         SharedPreferences.Editor editor = data.edit();
-                        editor.putString("element" + aa + 2, row.get(2) + "");
+                        if((row.get(2) + "") != ""){
+                            aapre = aa;
+                        }
+                        if(aapre == aa) {
+                            editor.putString("element" + cc + "Course", row.get(2) + "");
+                            editor.apply();
+                            results.add(row.get(2) + "");
+                        }
+                        if(aapre != aa) {
+                            editor.putString("element" + cc + "Course", data.getString("element" + 1 + "Course",""));
+                            editor.apply();
+                            results.add(data.getString("element" + 1 + "Course",""));
+                        }
+                        editor.putString("element" + cc + "Name", row.get(8) + "");
                         editor.apply();
-                        editor.putString("element" + aa + 8, row.get(8) + "");
-                        editor.apply();
-
-
-                        results.add(row.get(2) + "");
                         results.add(row.get(8) + "");
                     }
                     aa++;
                 }
             }
+
+
             return results;
         }
+
 
 
 
@@ -509,7 +534,7 @@ public class MainActivity extends AppCompatActivity
                 mOutputText.setMessage("No results returned.");
             } else {
                 //output.add(0, "Data retrieved using the Google Sheets API:");
-                mainMemberText.setText(TextUtils.join("\n", output));
+                //mainMemberText.setText(TextUtils.join("\n", output));
                 Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
 
             }
@@ -535,5 +560,15 @@ public class MainActivity extends AppCompatActivity
                 mOutputText.setMessage("Request cancelled.");
             }
         }
+    }
+    public void changeMemberObject(final short cc){
+        final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("find", cc).findFirst();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgrealm) {
+                realmMemberObject.course = data.getString("element" + cc + "Course", "");
+                realmMemberObject.name = data.getString("element" + cc + "Name", "");
+            }
+        });
     }
 }
