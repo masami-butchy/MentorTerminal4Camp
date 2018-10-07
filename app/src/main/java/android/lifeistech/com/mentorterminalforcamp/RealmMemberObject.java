@@ -6,6 +6,7 @@ import io.realm.RealmObject;
 public class RealmMemberObject extends RealmObject
  {
      //MemberList
+     public short find;
      public String name;
 
      public String course;
