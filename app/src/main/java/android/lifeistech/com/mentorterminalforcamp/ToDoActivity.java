@@ -102,23 +102,23 @@ public class ToDoActivity extends AppCompatActivity
         switch232 = findViewById(R.id.switch232);
         switch241 = findViewById(R.id.switch241);
 
-        switch111.setText(data.getString("element2",""));
-        switch112.setText(data.getString("element3",""));
-        switch113.setText(data.getString("element4",""));
-        switch114.setText(data.getString("element5",""));
-        switch121.setText(data.getString("element6",""));
-        switch131.setText(data.getString("element7",""));
-        switch132.setText(data.getString("element8",""));
-        switch133.setText(data.getString("element9",""));
-        switch134.setText(data.getString("element10",""));
-        switch135.setText(data.getString("element11",""));
-        switch141.setText(data.getString("element12",""));
-        switch211.setText(data.getString("element13",""));
-        switch221.setText(data.getString("element14",""));
-        switch222.setText(data.getString("element15",""));
-        switch231.setText(data.getString("element16",""));
-        switch232.setText(data.getString("element17",""));
-        switch241.setText(data.getString("element18",""));
+        switch111.setText(data.getString("elementName1",""));
+        switch112.setText(data.getString("elementName2",""));
+        switch113.setText(data.getString("elementName3",""));
+        switch114.setText(data.getString("elementName4",""));
+        switch121.setText(data.getString("elementName5",""));
+        switch131.setText(data.getString("elementName6",""));
+        switch132.setText(data.getString("elementName7",""));
+        switch133.setText(data.getString("elementName8",""));
+        switch134.setText(data.getString("elementName9",""));
+        switch135.setText(data.getString("elementName10",""));
+        switch141.setText(data.getString("elementName11",""));
+        switch211.setText(data.getString("elementName12",""));
+        switch221.setText(data.getString("elementName13",""));
+        switch222.setText(data.getString("elementName14",""));
+        switch231.setText(data.getString("elementName15",""));
+        switch232.setText(data.getString("elementName16",""));
+        switch241.setText(data.getString("elementName17",""));
 
 
 
@@ -486,6 +486,26 @@ public class ToDoActivity extends AppCompatActivity
                         editor.putString("element" + cc + "Name", row.get(8) + "");
                         editor.apply();
                         results.add(row.get(8) + "");
+                    }
+                    aa++;
+                }
+            }
+            range = "5Daysメンターto do!C3:AQ3";
+            response = this.mService.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            values = response.getValues();
+            if (values != null) {
+                int aa = 0;
+                int aapre = 0;
+                int bb = 0;
+                int cc = 0;
+                for (List row : values) {
+                    for(int i = 1; i <= 33;i++){
+                        SharedPreferences.Editor editor = data.edit();
+                        editor.putString("elementName" + i, row.get(i) + "");
+                        editor.apply();
+                        results.add(row.get(i) + "");
                     }
                     aa++;
                 }
