@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     public Realm realm;
     SharedPreferences data;
 
+    int a = 0;
+
     MainToDoListAdapter myToDoListAdapter;
     MemberListAdapter memberListAdapter;
     ListView myToDoListView, mainMemberList;
@@ -98,12 +100,15 @@ public class MainActivity extends AppCompatActivity
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Sheets API ...");
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-        getResultsFromApi();
+        if(a == 0) {
+            mProgress.setMessage("Calling Google Sheets API ...");
+            getResultsFromApi();
+            a = 1;
+        }
 
 
 
@@ -568,6 +573,8 @@ public class MainActivity extends AppCompatActivity
             public void execute(Realm bgrealm) {
                 realmMemberObject.course = data.getString("element" + cc + "Course", "");
                 realmMemberObject.name = data.getString("element" + cc + "Name", "");
+                Log.d("AAAAAAAAAAAAAAAAAAAA", ""+cc);
+
             }
         });
     }

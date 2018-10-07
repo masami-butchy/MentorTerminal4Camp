@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -37,11 +38,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MemberActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
+
+    Realm realm;
+    SharedPreferences data;
+    MemberListAdapter memberListAdapter;
+    ListView memberListView;
 
     public GoogleAccountCredential mCredential;
     public ProgressDialog mProgress,mOutputText;
@@ -60,6 +68,10 @@ public class MemberActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member);
+        realm = Realm.getDefaultInstance();
+        data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+
+        memberListView = (ListView)findViewById(R.id.memberListView);
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
@@ -68,7 +80,33 @@ public class MemberActivity extends AppCompatActivity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-        getResultsFromApi();
+        //getResultsFromApi();
+        setListComponent();
+    }
+    public void setListComponent(){
+
+
+        RealmResults<RealmMemberObject> resultsb = null;
+        resultsb = realm.where(RealmMemberObject.class).findAll();
+        List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
+        memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
+        memberListView.setAdapter(memberListAdapter);
+        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
+            changeMemberObject(cc);
+        }
+
+    }
+    public void changeMemberObject(final short cc){
+        final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("find", cc).findFirst();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgrealm) {
+                realmMemberObject.course = data.getString("element" + cc + "Course", "");
+                realmMemberObject.name = data.getString("element" + cc + "Name", "");
+                Log.d("AAAAAAAAAAAAAAAAAAAA", ""+cc);
+
+            }
+        });
     }
 
     @Override
@@ -341,9 +379,8 @@ public class MemberActivity extends AppCompatActivity
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
             String spreadsheetId = "1QmTMcVTLQEoYBICUltn_s0YDYmeDlMmitta6U_raEt0";
-            String range = "5Daysメンターto do!A1:AF";
+            String range = "5Daysメンターto do!A1:AG";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
@@ -352,10 +389,11 @@ public class MemberActivity extends AppCompatActivity
             if (values != null) {
                 for (List row : values) {
                     if(row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1){
-                        SharedPreferences.Editor editor = data.edit();
-                        for (int i = 2; i > 32; i++){
+                        for (int i = 2; i < 33; i++){
+                            SharedPreferences.Editor editor = data.edit();
                             editor.putString("element" + i, row.get(i) + "");
                             editor.apply();
+                            results.add(row.get(i)+"");
                         }
 
 
@@ -371,22 +409,42 @@ public class MemberActivity extends AppCompatActivity
             if (values != null) {
                 data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
                 int aa = 0;
+                int aapre = 0;
+                int bb = 0;
+                int cc = 0;
                 for (List row : values) {
                     if (row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1) {
+                        aapre = aa;
+                        bb = aa + Integer.parseInt(data.getString("NumberOfMember", "0"));
+                    }
+                    if(aa < bb){
+                        cc++;
                         SharedPreferences.Editor editor = data.edit();
-                        editor.putString("element" + aa + 2, row.get(2) + "");
+                        if((row.get(2) + "") != ""){
+                            aapre = aa;
+                        }
+                        if(aapre == aa) {
+                            editor.putString("element" + cc + "Course", row.get(2) + "");
+                            editor.apply();
+                            results.add(row.get(2) + "");
+                        }
+                        if(aapre != aa) {
+                            editor.putString("element" + cc + "Course", data.getString("element" + 1 + "Course",""));
+                            editor.apply();
+                            results.add(data.getString("element" + 1 + "Course",""));
+                        }
+                        editor.putString("element" + cc + "Name", row.get(8) + "");
                         editor.apply();
-                        editor.putString("element" + aa + 8, row.get(8) + "");
-                        editor.apply();
-
-
-                        results.add(data.getString("TeamAlphabet", ""));
+                        results.add(row.get(8) + "");
                     }
                     aa++;
                 }
             }
+
+
             return results;
         }
+
 
 
 
@@ -403,7 +461,9 @@ public class MemberActivity extends AppCompatActivity
                 mOutputText.setMessage("No results returned.");
             } else {
                 //output.add(0, "Data retrieved using the Google Sheets API:");
-                Log.d("SpreadSheetAPI", TextUtils.join("\n", output));
+                //mainMemberText.setText(TextUtils.join("\n", output));
+                Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
+
             }
         }
 
