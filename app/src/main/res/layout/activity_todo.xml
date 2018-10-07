@@ -133,26 +133,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch122"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch123"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch124"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -207,6 +187,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Switch" />
+
+                            <Switch
+                                android:id="@+id/switch135"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -241,26 +228,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch142"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch143"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch144"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -317,26 +284,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch212"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch213"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch214"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -378,19 +325,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch223"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch224"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -432,19 +366,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch233"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch234"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -479,26 +400,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch242"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch243"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch244"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -562,19 +463,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch313"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch314"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -616,19 +504,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch323"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch324"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -686,26 +561,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch412"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch413"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch414"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -747,19 +602,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch423"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch424"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -794,26 +636,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch432"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch433"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch434"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -878,19 +700,6 @@
                                 android:layout_weight="1"
                                 android:text="Switch" />
 
-                            <Switch
-                                android:id="@+id/switch513"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
-
-                            <Switch
-                                android:id="@+id/switch514"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Switch" />
                         </LinearLayout>
 
                     </LinearLayout>

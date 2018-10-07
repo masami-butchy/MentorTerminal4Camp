@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/courseTextView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/commentTextView"
@@ -25,7 +25,8 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/courseTextView"
-        tools:layout_editor_absoluteY="57dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/courseTextView"
+        tools:layout_editor_absoluteY="54dp" />
 
     <TextView
         android:id="@+id/nameTextView"
@@ -40,7 +41,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="60dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/commentTextView"
         app:layout_constraintEnd_toEndOf="parent"

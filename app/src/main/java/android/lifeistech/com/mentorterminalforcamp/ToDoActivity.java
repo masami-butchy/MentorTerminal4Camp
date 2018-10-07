@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,6 +50,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class ToDoActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks{
     public Realm realm;
+    SharedPreferences data;
+
     MyToDoListAdapter myToDoListAdapter;
     ListView myToDoListView;
     TextView memterToDoTitleTextView;
@@ -65,14 +68,62 @@ public class ToDoActivity extends AppCompatActivity
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS };
 
+    Switch switch111 , switch112, switch113, switch114, switch121, switch131,switch132,switch133,switch134,switch135,switch141;
+    Switch switch211 , switch221, switch222 , switch231, switch232, switch241;
+    Switch switch311 , switch312, switch321 , switch322;
+    Switch switch411 , switch421, switch422 , switch431;
+    Switch switch511 , switch512, switch521 , switch522, switch523, switch524;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
         realm = Realm.getDefaultInstance();
+        data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+
 
         myToDoListView = (ListView)findViewById(R.id.myToDoList);
         memterToDoTitleTextView = (TextView)findViewById(R.id.memterToDoTitleTextView);
+        switch111 = findViewById(R.id.switch111);
+        switch112 = findViewById(R.id.switch112);
+        switch113 = findViewById(R.id.switch113);
+        switch114 = findViewById(R.id.switch114);
+        switch121 = findViewById(R.id.switch121);
+        switch131 = findViewById(R.id.switch131);
+        switch132 = findViewById(R.id.switch132);
+        switch133 = findViewById(R.id.switch133);
+        switch134 = findViewById(R.id.switch134);
+        switch135 = findViewById(R.id.switch135);
+        switch141 = findViewById(R.id.switch141);
+        switch211 = findViewById(R.id.switch211);
+        switch221  =findViewById(R.id.switch221);
+        switch222 = findViewById(R.id.switch222);
+        switch231  =findViewById(R.id.switch231);
+        switch232 = findViewById(R.id.switch232);
+        switch241 = findViewById(R.id.switch241);
+
+        switch111.setText(data.getString("element2",""));
+        switch112.setText(data.getString("element3",""));
+        switch113.setText(data.getString("element4",""));
+        switch114.setText(data.getString("element5",""));
+        switch121.setText(data.getString("element6",""));
+        switch131.setText(data.getString("element7",""));
+        switch132.setText(data.getString("element8",""));
+        switch133.setText(data.getString("element9",""));
+        switch134.setText(data.getString("element10",""));
+        switch135.setText(data.getString("element11",""));
+        switch141.setText(data.getString("element12",""));
+        switch211.setText(data.getString("element13",""));
+        switch221.setText(data.getString("element14",""));
+        switch222.setText(data.getString("element15",""));
+        switch231.setText(data.getString("element16",""));
+        switch232.setText(data.getString("element17",""));
+        switch241.setText(data.getString("element18",""));
+
+
+
+
+
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
@@ -378,9 +429,8 @@ public class ToDoActivity extends AppCompatActivity
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
             String spreadsheetId = "1QmTMcVTLQEoYBICUltn_s0YDYmeDlMmitta6U_raEt0";
-            String range = "5Daysメンターto do!A4:B";
+            String range = "5Daysメンターto do!A1:AG";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
@@ -389,10 +439,11 @@ public class ToDoActivity extends AppCompatActivity
             if (values != null) {
                 for (List row : values) {
                     if(row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1){
-                        SharedPreferences.Editor editor = data.edit();
-                        for (int i = 2; i < 32; i++){
+                        for (int i = 2; i < 33; i++){
+                            SharedPreferences.Editor editor = data.edit();
                             editor.putString("element" + i, row.get(i) + "");
                             editor.apply();
+                            results.add(row.get(i)+"");
                         }
 
 
@@ -408,22 +459,42 @@ public class ToDoActivity extends AppCompatActivity
             if (values != null) {
                 data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
                 int aa = 0;
+                int aapre = 0;
+                int bb = 0;
+                int cc = 0;
                 for (List row : values) {
                     if (row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1) {
+                        aapre = aa;
+                        bb = aa + Integer.parseInt(data.getString("NumberOfMember", "0"));
+                    }
+                    if(aa < bb){
+                        cc++;
                         SharedPreferences.Editor editor = data.edit();
-                        editor.putString("element" + aa + 2, row.get(2) + "");
+                        if((row.get(2) + "") != ""){
+                            aapre = aa;
+                        }
+                        if(aapre == aa) {
+                            editor.putString("element" + cc + "Course", row.get(2) + "");
+                            editor.apply();
+                            results.add(row.get(2) + "");
+                        }
+                        if(aapre != aa) {
+                            editor.putString("element" + cc + "Course", data.getString("element" + 1 + "Course",""));
+                            editor.apply();
+                            results.add(data.getString("element" + 1 + "Course",""));
+                        }
+                        editor.putString("element" + cc + "Name", row.get(8) + "");
                         editor.apply();
-                        editor.putString("element" + aa + 8, row.get(8) + "");
-                        editor.apply();
-
-
-                        results.add(data.getString("TeamAlphabet", ""));
+                        results.add(row.get(8) + "");
                     }
                     aa++;
                 }
             }
+
+
             return results;
         }
+
 
 
 
@@ -440,7 +511,9 @@ public class ToDoActivity extends AppCompatActivity
                 mOutputText.setMessage("No results returned.");
             } else {
                 //output.add(0, "Data retrieved using the Google Sheets API:");
-                Log.d("SpreadSheetAPI", TextUtils.join("\n", output));
+                //mainMemberText.setText(TextUtils.join("\n", output));
+                Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
+
             }
         }
 
