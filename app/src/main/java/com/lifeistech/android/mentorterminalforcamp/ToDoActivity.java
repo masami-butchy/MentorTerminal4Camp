@@ -1,4 +1,4 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -34,8 +34,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
-
-import org.mortbay.jetty.Main;
 
 import java.io.IOException;
 import java.util.ArrayList;

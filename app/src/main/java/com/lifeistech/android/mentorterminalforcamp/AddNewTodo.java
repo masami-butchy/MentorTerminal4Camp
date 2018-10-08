@@ -1,4 +1,4 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

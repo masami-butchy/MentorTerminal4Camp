@@ -1,4 +1,4 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
 
 import android.app.Application;
 
