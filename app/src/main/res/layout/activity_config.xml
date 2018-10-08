@@ -94,21 +94,21 @@
             tools:layout_editor_absoluteY="98dp">
 
             <EditText
-                android:id="@+id/numberOfMember"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="チームの人数を入力"
-                android:inputType="textPersonName" />
-
-            <EditText
                 android:id="@+id/menterName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="メンター名を入力"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/numberOfMember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="チームの人数を入力"
                 android:inputType="textPersonName" />
 
             <EditText
