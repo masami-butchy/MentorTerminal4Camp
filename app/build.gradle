@@ -2,7 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android' // 追加
 
 android {
-    compileSdkVersion 28
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+        compileSdkVersion 28
     defaultConfig {
         applicationId "android.lifeistech.com.mentorterminalforcamp"
         minSdkVersion 21
