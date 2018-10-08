@@ -1,4 +1,4 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

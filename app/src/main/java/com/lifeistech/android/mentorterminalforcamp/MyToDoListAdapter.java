@@ -1,4 +1,4 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,11 +14,11 @@ import java.util.List;
 
 import io.realm.Realm;
 
-public class MainToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
+public class MyToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
 
     List<RealmToDoObject> mListComponent;
     Realm realm;
-    public MainToDoListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
+    public MyToDoListAdapter(Context context, int layoutResourceId, List<RealmToDoObject> objects, Realm bgrealm){
         super(context, layoutResourceId, objects);
 
         mListComponent = objects;
@@ -36,7 +36,7 @@ public class MainToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
         final ViewHolder viewHolder;
 
         if(convertView ==null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_maintodolist_component, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_mytodo_component, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
@@ -93,12 +93,12 @@ public class MainToDoListAdapter extends ArrayAdapter<RealmToDoObject>{
         LinearLayout linearLayout;
 
         public ViewHolder(View view){
-            titleTextView = (TextView)view.findViewById(R.id.mainToDoComponentTitle);
-            categoryTextView = (TextView)view.findViewById(R.id.mainToDoComponentSubject);
-            priorityTextView = (TextView)view.findViewById(R.id.mainToDoComponentPriority);
-            contentTextView = (TextView)view.findViewById(R.id.mainToDoComponentContent);
-            checkBox = (CheckBox)view.findViewById(R.id.mainToDoComponentCheckBox);
-            linearLayout = (LinearLayout) view.findViewById(R.id.mainToDoComponent);
+            titleTextView = (TextView)view.findViewById(R.id.myToDoComponentTitleTextView);
+            categoryTextView = (TextView)view.findViewById(R.id.myToDoComponentCategoryTextView);
+            priorityTextView = (TextView)view.findViewById(R.id.myToDoComponentPriorityTextView);
+            contentTextView = (TextView)view.findViewById(R.id.myToDoComponentContentTextView);
+            checkBox = (CheckBox)view.findViewById(R.id.myToDoComponentCheckBox);
+            linearLayout = (LinearLayout) view.findViewById(R.id.myToDoComponentParentLinearLayout);
         }
     }
 

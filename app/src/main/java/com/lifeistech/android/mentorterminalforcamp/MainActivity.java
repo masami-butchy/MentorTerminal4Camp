@@ -1,4 +1,19 @@
-package android.lifeistech.com.mentorterminalforcamp;
+package com.lifeistech.android.mentorterminalforcamp;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.ExponentialBackOff;
+
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.*;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -19,19 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.ValueRange;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,17 +46,23 @@ import io.realm.RealmResults;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MemberActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements EasyPermissions.PermissionCallbacks {
 
-    Realm realm;
+    public Realm realm;
     SharedPreferences data;
+
+    int a = 0;
+
+    MainToDoListAdapter myToDoListAdapter;
     MemberListAdapter memberListAdapter;
-    ListView memberListView;
+    ListView myToDoListView, mainMemberList;
+    TextView mainMemberText;
 
-    public GoogleAccountCredential mCredential;
-    public ProgressDialog mProgress,mOutputText;
-
+    //private TextView mOutputText;
+    //private Button mCallApiButton;
+    ProgressDialog mProgress,mOutputText;
+    public static GoogleAccountCredential mCredential;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -62,52 +71,44 @@ public class MemberActivity extends AppCompatActivity
 
     private static final String BUTTON_TEXT = "Call Google Sheets API";
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS };
+    private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS_READONLY };
 
+    /**
+     * Create the main activity.
+     * @param savedInstanceState previously saved instance data.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member);
+        setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
         data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
 
-        memberListView = (ListView)findViewById(R.id.memberListView);
+        myToDoListView = (ListView) findViewById(R.id.mainToDoList);
+        mainMemberList = (ListView)findViewById(R.id.mainMemberList);
+        mainMemberText = (TextView)findViewById(R.id.mainMemberTitleTextView);
+
+        //createDefaultLayout();
+        //getResultsFromApi();
+
+        setListComponent();
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Sheets API ...");
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-        //getResultsFromApi();
-        setListComponent();
-    }
-    public void setListComponent(){
-
-
-        RealmResults<RealmMemberObject> resultsb = null;
-        resultsb = realm.where(RealmMemberObject.class).findAll();
-        List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
-        memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
-        memberListView.setAdapter(memberListAdapter);
-        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
-            changeMemberObject(cc);
+        if(a == 0) {
+            mProgress.setMessage("Calling Google Sheets API ...");
+            getResultsFromApi();
+            a = 1;
         }
 
-    }
-    public void changeMemberObject(final short cc){
-        final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("find", cc).findFirst();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgrealm) {
-                realmMemberObject.course = data.getString("element" + cc + "Course", "");
-                realmMemberObject.name = data.getString("element" + cc + "Name", "");
-                Log.d("AAAAAAAAAAAAAAAAAAAA", ""+cc);
 
-            }
-        });
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//これはonOptionsItemSelected(MenuItem item){}のあとじゃないとonOptionsItemSelectedが機能しない。ここでonOptionsItemSelectedを含めた設定が適用されると思われる。
@@ -129,17 +130,89 @@ public class MemberActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void intentMemberMenter(View v){
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setListComponent();
+    }
+
+//    private void createDefaultLayout(){
+//        LinearLayout activityLayout = new LinearLayout(this);
+//       LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//               LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.MATCH_PARENT);
+//        activityLayout.setLayoutParams(lp);
+//        activityLayout.setOrientation(LinearLayout.VERTICAL);
+//        activityLayout.setPadding(16, 16, 16, 16);
+//
+//        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//
+//        mCallApiButton = new Button(this);
+//        mCallApiButton.setText(BUTTON_TEXT);
+//        mCallApiButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mCallApiButton.setEnabled(false);
+//                mOutputText.setText("");
+//                getResultsFromApi();
+//                mCallApiButton.setEnabled(true);
+//            }
+//        });
+//        activityLayout.addView(mCallApiButton);
+//
+//        mOutputText = new TextView(this);
+//        mOutputText.setLayoutParams(tlp);
+//        mOutputText.setPadding(16, 16, 16, 16);
+//        mOutputText.setVerticalScrollBarEnabled(true);
+//        mOutputText.setMovementMethod(new ScrollingMovementMethod());
+//        mOutputText.setText(
+//                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
+//        activityLayout.addView(mOutputText);
+//
+//        mProgress = new ProgressDialog(this);
+//        mProgress.setMessage("Calling Google Sheets API ...");
+//
+//        setContentView(activityLayout);
+//    }
+
+
+    public void setListComponent(){
+
+        RealmResults<RealmToDoObject> results = null;
+        /*if (filterSignal ==1) {
+            results = realm.where(RealmToDoObject.class).equalTo("checkBoxisChecked", true).findAll();
+        } else if (filterSignal == 2) {
+            results = realm.where(RealmToDoObject.class).equalTo("checkBoxisChecked", false).findAll();
+        } else {
+            results = realm.where(RealmToDoObject.class).findAll();
+        }*/
+        results = realm.where(RealmToDoObject.class).findAll();
+        List<RealmToDoObject> item = realm.copyFromRealm(results);
+        myToDoListAdapter = new MainToDoListAdapter(this, R.layout.activity_maintodolist_component, item, realm);
+        myToDoListView.setAdapter(myToDoListAdapter);
+
+        RealmResults<RealmMemberObject> resultsb = null;
+        resultsb = realm.where(RealmMemberObject.class).findAll();
+        List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
+        memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
+        mainMemberList.setAdapter(memberListAdapter);
+        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
+            changeMemberObject(cc);
+        }
+
+    }
+
+    public void intentMenter(View v){
         Intent intent = new Intent(v.getContext(), ToDoActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         v.getContext().startActivity(intent);
     }
-    public void intentMemberMember(View v){
-    }
-    public void intentMemberHome(View v){
-        Intent intent = new Intent(v.getContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public void intentMember(View v){
+        Intent intent = new Intent(v.getContext(), MemberActivity.class);
         v.getContext().startActivity(intent);
+    }
+    public void intentHome(View v){
     }
 
     /**
@@ -507,5 +580,17 @@ public class MemberActivity extends AppCompatActivity
                 mOutputText.setMessage("Request cancelled.");
             }
         }
+    }
+    public void changeMemberObject(final short cc){
+        final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("find", cc).findFirst();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgrealm) {
+                realmMemberObject.course = data.getString("element" + cc + "Course", "");
+                realmMemberObject.name = data.getString("element" + cc + "Name", "");
+                Log.d("AAAAAAAAAAAAAAAAAAAA", ""+cc);
+
+            }
+        });
     }
 }
