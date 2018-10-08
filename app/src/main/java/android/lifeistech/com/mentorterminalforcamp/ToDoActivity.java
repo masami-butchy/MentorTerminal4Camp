@@ -429,7 +429,7 @@ public class ToDoActivity extends AppCompatActivity
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            String spreadsheetId = "1QmTMcVTLQEoYBICUltn_s0YDYmeDlMmitta6U_raEt0";
+            String spreadsheetId = data.getString("Url", "");
             String range = "5Daysメンターto do!A1:AG";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
