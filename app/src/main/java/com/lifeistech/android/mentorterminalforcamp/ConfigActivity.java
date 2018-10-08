@@ -35,7 +35,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     public void ok(View v){
         SharedPreferences.Editor editor = data.edit();
-        editor.putString("Url", menterName.getText().toString());
+        editor.putString("MenterName", menterName.getText().toString());
         editor.apply();
         editor.putString("Url", uRL.getText().toString());
         editor.apply();
