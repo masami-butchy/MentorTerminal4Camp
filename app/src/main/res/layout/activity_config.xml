@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -43,6 +43,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
@@ -55,7 +57,8 @@
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
                 android:text="メンター名："
@@ -63,21 +66,41 @@
 
             <TextView
                 android:id="@+id/textView212"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
                 android:text="チームの人数："
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/textView222"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="シートID："
+                android:textSize="18sp" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/verticalLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="98dp">
+
+            <EditText
+                android:id="@+id/numberOfMember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="チームの人数を入力"
+                android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/menterName"
@@ -89,12 +112,12 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/numberOfMember"
+                android:id="@+id/URL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="チームの人数を入力"
+                android:hint="シートID"
                 android:inputType="textPersonName" />
 
         </LinearLayout>
@@ -112,7 +135,7 @@
         android:onClick="memberListCreate"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
-        android:text="MemverLis再生成"
+        android:text="MemverList再生成"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

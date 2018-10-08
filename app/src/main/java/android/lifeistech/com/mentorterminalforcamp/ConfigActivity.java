@@ -13,7 +13,7 @@ import io.realm.RealmResults;
 
 
 public class ConfigActivity extends AppCompatActivity {
-    EditText menterName, numberOfMember;
+    EditText menterName, numberOfMember,uRL;
     SharedPreferences data;
     Realm realm;
     @Override
@@ -26,8 +26,10 @@ public class ConfigActivity extends AppCompatActivity {
 
         menterName = (EditText)findViewById(R.id.menterName);
         numberOfMember = (EditText)findViewById(R.id.numberOfMember);
+        uRL = (EditText)findViewById(R.id.URL);
         menterName.setText(data.getString("MenterName", ""));
         numberOfMember.setText(data.getString("NumberOfMember", ""));
+        uRL.setText(data.getString("Url", ""));
 
     }
 
@@ -35,12 +37,16 @@ public class ConfigActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = data.edit();
         editor.putString("MenterName", menterName.getText().toString());
         editor.apply();
+        editor.putString("Url", uRL.getText().toString());
+        editor.apply();
+
         if(data.getString("NumberOfMember" , "") == ""){
             editor.putString("NumberOfMember", numberOfMember.getText().toString());
             editor.apply();
             memberListCreate(v);
         }else {
             editor.putString("NumberOfMember", numberOfMember.getText().toString());
+            memberListCreate(v);
             editor.apply();
         }
         finish();
@@ -61,7 +67,6 @@ public class ConfigActivity extends AppCompatActivity {
             memberListSave((short)a);
         }
         Log.d("wwwwwwwwww","" + i);
-        finish();
     }
 
 
