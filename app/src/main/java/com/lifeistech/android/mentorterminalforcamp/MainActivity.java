@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-        if(a == 0) {
+        if(a == 1) {
             mProgress.setMessage("Calling Google Sheets API ...");
             getResultsFromApi();
             a = 1;
@@ -110,12 +110,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {//これはonOptionsItemSelected(MenuItem item){}のあとじゃないとonOptionsItemSelectedが機能しない。ここでonOptionsItemSelectedを含めた設定が適用されると思われる。
 
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {//これは onCreateOptionsMenu(Menu menu){}の前じゃないとここは機能しない。onCreateOptionsMenu でonOptionsItemSelectedを含めた設定が適用されると思われる。
 
@@ -126,10 +121,16 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.menuSync:
                 getResultsFromApi();
+                setListComponent();
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {//これはonOptionsItemSelected(MenuItem item){}のあとじゃないとonOptionsItemSelectedが機能しない。ここでonOptionsItemSelectedを含めた設定が適用されると思われる。
 
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     @Override
     protected void onResume(){
         super.onResume();
@@ -192,15 +193,15 @@ public class MainActivity extends AppCompatActivity
         List<RealmToDoObject> item = realm.copyFromRealm(results);
         myToDoListAdapter = new MainToDoListAdapter(this, R.layout.activity_maintodolist_component, item, realm);
         myToDoListView.setAdapter(myToDoListAdapter);
-
+        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
+            changeMemberObject(cc);
+        }
         RealmResults<RealmMemberObject> resultsb = null;
         resultsb = realm.where(RealmMemberObject.class).findAll();
         List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
         memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
         mainMemberList.setAdapter(memberListAdapter);
-        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
-            changeMemberObject(cc);
-        }
+
 
     }
 
@@ -486,6 +487,7 @@ public class MainActivity extends AppCompatActivity
                 int bb = 0;
                 int cc = 0;
                 for (List row : values) {
+                    //Log.d("QQQQQQQQQQQ:",row.get(1).toString());
                     if (row.get(1).toString().indexOf(data.getString("MenterName", "")) != -1) {
                         aapre = aa;
                         bb = aa + Integer.parseInt(data.getString("NumberOfMember", "0"));
@@ -588,9 +590,11 @@ public class MainActivity extends AppCompatActivity
             public void execute(Realm bgrealm) {
                 realmMemberObject.course = data.getString("element" + cc + "Course", "");
                 realmMemberObject.name = data.getString("element" + cc + "Name", "");
-                Log.d("AAAAAAAAAAAAAAAAAAAA", ""+cc);
 
             }
         });
+        Log.d("AAAAAAAAAAAAAAAAAAAA"+cc, ""+realmMemberObject.name+"   :   "+realmMemberObject.course);
+        Log.d("AAAAAAAAAAAAAAAAAAAA"+cc, data.getString("element" + cc + "Course", "")+"   :   "+data.getString("element" + cc + "Name", ""));
+
     }
 }
