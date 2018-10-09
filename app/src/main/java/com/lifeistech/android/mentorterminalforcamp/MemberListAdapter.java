@@ -142,11 +142,11 @@ public class MemberListAdapter extends ArrayAdapter<RealmMemberObject>{
         buttonX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("name", item.name).findFirst();
+                final RealmMemberObject realmMemberObject = realm.where(RealmMemberObject.class).equalTo("find", item.find).findFirst();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm bgrealm) {
-                        if (buttonX == viewHolder.button1){
+                        if (buttonX.getId() == viewHolder.button1.getId()){
                             if(textX == 00){
                                 realmMemberObject.textOne = 10;
                             }if(textX == 10){

@@ -26,7 +26,7 @@ public class ConfigActivity extends AppCompatActivity {
 
         menterName = (EditText)findViewById(R.id.menterName);
         numberOfMember = (EditText)findViewById(R.id.numberOfMember);
-        uRL = (EditText)findViewById(R.id.URL);
+        uRL = (EditText)findViewById(R.id.uRL);
         menterName.setText(data.getString("MenterName", ""));
         numberOfMember.setText(data.getString("NumberOfMember", ""));
         uRL.setText(data.getString("Url", ""));
@@ -46,8 +46,8 @@ public class ConfigActivity extends AppCompatActivity {
             memberListCreate(v);
         }else {
             editor.putString("NumberOfMember", numberOfMember.getText().toString());
-            memberListCreate(v);
             editor.apply();
+            memberListCreate(v);
         }
         finish();
     }

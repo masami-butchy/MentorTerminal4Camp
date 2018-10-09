@@ -112,7 +112,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/URL"
+                android:id="@+id/uRL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
