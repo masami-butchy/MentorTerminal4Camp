@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import io.realm.Realm;
@@ -14,6 +15,7 @@ import io.realm.RealmResults;
 
 public class ConfigActivity extends AppCompatActivity {
     EditText menterName, numberOfMember,uRL;
+    CheckBox configCheckBox;
     SharedPreferences data;
     Realm realm;
     @Override
@@ -27,9 +29,15 @@ public class ConfigActivity extends AppCompatActivity {
         menterName = (EditText)findViewById(R.id.menterName);
         numberOfMember = (EditText)findViewById(R.id.numberOfMember);
         uRL = (EditText)findViewById(R.id.uRL);
+        configCheckBox = (CheckBox)findViewById(R.id.configCheckBox);
         menterName.setText(data.getString("MenterName", ""));
         numberOfMember.setText(data.getString("NumberOfMember", ""));
         uRL.setText(data.getString("Url", ""));
+        if(data.getBoolean("CanShowUseHint", false)){
+            configCheckBox.setChecked(false);
+        }if(!data.getBoolean("CanShowUseHint", true)){
+            configCheckBox.setChecked(true);
+        }
 
     }
 
@@ -48,6 +56,15 @@ public class ConfigActivity extends AppCompatActivity {
             editor.putString("NumberOfMember", numberOfMember.getText().toString());
             editor.apply();
             memberListCreate(v);
+        }
+        if( configCheckBox.isChecked() ){
+            editor = data.edit();
+            editor.putBoolean("CanShowUseHint", false);
+            editor.apply();
+        }if(! configCheckBox.isChecked() ){
+            editor = data.edit();
+            editor.putBoolean("CanShowUseHint", true);
+            editor.apply();
         }
         finish();
     }
