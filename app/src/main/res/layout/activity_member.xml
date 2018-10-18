@@ -8,7 +8,7 @@
     <ListView
         android:id="@+id/memberListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="600dp" />
 
     <LinearLayout
         android:id="@+id/memberUnder"
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="intentMemberMenter"
-            android:text="MENTER"
+            android:text="MENTOR"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

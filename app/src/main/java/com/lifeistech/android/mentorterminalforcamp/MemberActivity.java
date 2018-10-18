@@ -518,4 +518,9 @@ public class MemberActivity extends AppCompatActivity
             }
         }
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setListComponent();
+    }
 }
