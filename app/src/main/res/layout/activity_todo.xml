@@ -837,7 +837,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="intentToDoMenter"
-            android:text="MENTER"
+            android:text="MENTOR"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

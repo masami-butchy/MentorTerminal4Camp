@@ -544,7 +544,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
-
+            Log.d("QQQQQQQQQQQQQQQQQQQQQQQ", "TaskEnd");
+            setListComponent();
             return results;
         }
 
@@ -554,6 +555,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             mOutputText.setMessage("");
+            mProgress.setMessage("Calling Google Sheets API ...");
             mProgress.show();
         }
 
@@ -562,12 +564,14 @@ public class MainActivity extends AppCompatActivity
             mProgress.hide();
             if (output == null || output.size() == 0) {
                 mOutputText.setMessage("No results returned.");
+                Log.d("SpreadSheetAPIAAAA", "No results returned.");
             } else {
-                //output.add(0, "Data retrieved using the Google Sheets API:");
+                output.add(0, "Data retrieved using the Google Sheets API:");
                 //mainMemberText.setText(TextUtils.join("\n", output));
-                Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
+                Log.d("SpreadSheetAPIAAAA", "re" + TextUtils.join("\n", output).toString());
 
             }
+            Log.d("SpreadSheetAPIAAAA", "re" + TextUtils.join("\n", output).toString());
         }
 
         @Override
