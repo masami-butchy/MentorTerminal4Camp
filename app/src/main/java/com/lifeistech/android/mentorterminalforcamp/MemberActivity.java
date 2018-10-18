@@ -124,10 +124,11 @@ public class MemberActivity extends AppCompatActivity
             case R.id.menuALL:
                 Intent intent = new Intent(this, ConfigActivity.class);
                 startActivity(intent);
-
+                return super.onOptionsItemSelected(item);
             case R.id.menuSync:
                 getResultsFromApi();
                 setListComponent();
+                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }

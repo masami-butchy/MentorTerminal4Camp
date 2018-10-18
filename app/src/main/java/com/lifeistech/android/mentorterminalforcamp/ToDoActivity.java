@@ -147,9 +147,10 @@ public class ToDoActivity extends AppCompatActivity
             case R.id.menuALL:
                 Intent intent = new Intent(this, ConfigActivity.class);
                 startActivity(intent);
-
+                return super.onOptionsItemSelected(item);
             case R.id.menuSync:
                 getResultsFromApi();
+                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }

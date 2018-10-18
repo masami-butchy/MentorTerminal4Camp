@@ -41,8 +41,8 @@ import static com.lifeistech.android.mentorterminalforcamp.MainActivity.REQUEST_
 
 public class MentorTerminalForCampApplication extends Application //implements EasyPermissions.PermissionCallbacks
 {
-    public static int a;//MainActivityの起動時同期フラグメント
-    public static int b;//初回起動フラグメント
+    public static int a;//起動時フラグメント 毎回の起動時
+    public static int b;//初回起動フラグメント 初回起動のみ
     SharedPreferences data;
 
 

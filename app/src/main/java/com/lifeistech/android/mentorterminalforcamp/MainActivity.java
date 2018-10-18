@@ -81,10 +81,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        if(data.getBoolean("CanShowUseHint" , true)){
-            Intent intent = new Intent(this,HintActivity.class);
-            startActivity(intent);
-        }
+
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
         data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
@@ -100,8 +97,13 @@ public class MainActivity extends AppCompatActivity
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
         // Initialize credentials and service object.
-
         if(MentorTerminalForCampApplication.a == 0) {
+
+            if(data.getBoolean("CanShowUseHint" , true)){
+                MentorTerminalForCampApplication.a = 1;
+                Intent intent = new Intent(this,HintActivity.class);
+                startActivity(intent);
+            }
             mCredential = GoogleAccountCredential.usingOAuth2(
                     getApplicationContext(), Arrays.asList(SCOPES))
                     .setBackOff(new ExponentialBackOff());
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity
             getResultsFromApi();
             MentorTerminalForCampApplication.a = 1;
         }
+
         setListComponent();
 
     }
@@ -121,10 +124,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.menuALL:
                 Intent intent = new Intent(this, ConfigActivity.class);
                 startActivity(intent);
+                return super.onOptionsItemSelected(item);
 
             case R.id.menuSync:
                 getResultsFromApi();
                 setListComponent();
+                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }
