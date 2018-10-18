@@ -35,6 +35,8 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import org.mortbay.jetty.Main;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,8 +127,9 @@ public class ToDoActivity extends AppCompatActivity
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
-        mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(),
-                Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
+        mCredential = MainActivity.mCredential;
+//        GoogleAccountCredential.usingOAuth2(getApplicationContext(),
+//                Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
 
 
         setListComponent();

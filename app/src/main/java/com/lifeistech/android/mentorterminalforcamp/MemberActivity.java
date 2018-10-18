@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.theme.MaterialComponentsViewInflater;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -77,9 +78,10 @@ public class MemberActivity extends AppCompatActivity
         mOutputText = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Sheets API ...");
         // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
+        mCredential = MainActivity.mCredential;
+//                GoogleAccountCredential.usingOAuth2(
+//                getApplicationContext(), Arrays.asList(SCOPES))
+//                .setBackOff(new ExponentialBackOff());
         //getResultsFromApi();
         setListComponent();
     }
@@ -125,6 +127,7 @@ public class MemberActivity extends AppCompatActivity
 
             case R.id.menuSync:
                 getResultsFromApi();
+                setListComponent();
         }
         return super.onOptionsItemSelected(item);
     }

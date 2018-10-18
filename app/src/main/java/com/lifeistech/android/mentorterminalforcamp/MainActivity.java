@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity
     public Realm realm;
     SharedPreferences data;
 
-    int a = 0;
-
     MainToDoListAdapter myToDoListAdapter;
     MemberListAdapter memberListAdapter;
     ListView myToDoListView, mainMemberList;
@@ -71,7 +69,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final String BUTTON_TEXT = "Call Google Sheets API";
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS_READONLY };
+
+    private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS };
+
 
     /**
      * Create the main activity.
@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        if(data.getBoolean("CanShowUseHint" , true)){
+            Intent intent = new Intent(this,HintActivity.class);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_main);
         realm = Realm.getDefaultInstance();
         data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
@@ -91,24 +96,22 @@ public class MainActivity extends AppCompatActivity
         //createDefaultLayout();
         //getResultsFromApi();
 
-        setListComponent();
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
         // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
-        if(a == 1) {
+
+        if(MentorTerminalForCampApplication.a == 0) {
+            mCredential = GoogleAccountCredential.usingOAuth2(
+                    getApplicationContext(), Arrays.asList(SCOPES))
+                    .setBackOff(new ExponentialBackOff());
             mProgress.setMessage("Calling Google Sheets API ...");
             getResultsFromApi();
-            a = 1;
+            MentorTerminalForCampApplication.a = 1;
         }
-
-
+        setListComponent();
 
     }
-
 
 
     @Override

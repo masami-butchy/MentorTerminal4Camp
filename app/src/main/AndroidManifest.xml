@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/icon1"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +27,7 @@
         <activity android:name=".MemberActivity" />
         <activity android:name=".ToDoActivity"/>
         <activity android:name=".ConfigActivity"/>
+        <activity android:name=".HintActivity"/>
     </application>
 
     <!--meta情報を追加-->

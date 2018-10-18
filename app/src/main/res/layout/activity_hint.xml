@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/hintImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/hintCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/hintRightButton"
+        app:layout_constraintStart_toEndOf="@+id/hintLeftButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hint1" />
+
+    <ImageButton
+        android:id="@+id/hintLeftButton"
+        android:layout_width="42dp"
+        android:layout_height="74dp"
+        android:onClick="hintLeft"
+        app:layout_constraintBottom_toBottomOf="@+id/hintImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hintImageView"
+        app:srcCompat="@drawable/left" />
+
+    <ImageButton
+        android:id="@+id/hintRightButton"
+        android:layout_width="42dp"
+        android:layout_height="72dp"
+        android:onClick="hintRight"
+        app:layout_constraintBottom_toBottomOf="@+id/hintImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hintImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/right" />
+
+    <CheckBox
+        android:id="@+id/hintCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="起動時に表示しない"
+        android:textColor="?attr/textColorAlertDialogListItem"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/hintTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:text="HINT 1"
+        android:textColor="?attr/textColorAlertDialogListItem"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
