@@ -127,6 +127,7 @@ public class ToDoActivity extends AppCompatActivity
 
         mProgress = new ProgressDialog(this);
         mOutputText = new ProgressDialog(this);
+        mProgress.setMessage("Calling Google Sheets API ...");
         mCredential = MainActivity.mCredential;
 //        GoogleAccountCredential.usingOAuth2(getApplicationContext(),
 //                Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
@@ -522,7 +523,7 @@ public class ToDoActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setMessage("");
+            mProgress.setMessage("Calling Google Sheets API ...");
             mProgress.show();
         }
 
