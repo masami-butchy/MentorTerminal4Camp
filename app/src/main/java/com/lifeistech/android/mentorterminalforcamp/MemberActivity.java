@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.theme.MaterialComponentsViewInflater;
 import android.support.v7.app.AppCompatActivity;
@@ -87,15 +88,15 @@ public class MemberActivity extends AppCompatActivity
     }
     public void setListComponent(){
 
-
+        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
+            changeMemberObject(cc);
+        }
         RealmResults<RealmMemberObject> resultsb = null;
         resultsb = realm.where(RealmMemberObject.class).findAll();
         List<RealmMemberObject> itemb = realm.copyFromRealm(resultsb);
         memberListAdapter = new MemberListAdapter(this, R.layout.activity_mainmemberlist_component, itemb, realm);
         memberListView.setAdapter(memberListAdapter);
-        for(short cc = 1; cc <= (short)Integer.parseInt(data.getString("NumberOfMember", "0")); cc++){
-            changeMemberObject(cc);
-        }
+
 
     }
     public void changeMemberObject(final short cc){
@@ -368,7 +369,10 @@ public class MemberActivity extends AppCompatActivity
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
-                return getDataFromApi();
+                List<String> results = new ArrayList<String>();
+                results = getDataFromApi();
+                return results;
+
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -465,7 +469,6 @@ public class MemberActivity extends AppCompatActivity
                 }
             }
 
-
             return results;
         }
 
@@ -474,8 +477,10 @@ public class MemberActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setMessage("");
+            //mOutputText.setMessage("");
             mProgress.show();
+            setListComponent();
+
         }
 
         @Override
@@ -489,6 +494,7 @@ public class MemberActivity extends AppCompatActivity
                 Log.d("SpreadSheetAPI", TextUtils.join("\n", output).toString());
 
             }
+
         }
 
         @Override
